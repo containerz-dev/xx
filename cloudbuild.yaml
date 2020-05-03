@@ -1,0 +1,37 @@
+steps:
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk:alpine
+    entrypoint: 'ash'
+    args:
+    - '-c'
+    - |
+      # File that contains failures.
+      failure_file=failure.log
+      touch ${failure_file}
+      # Loop through the builders, and build independently.
+      for f in $(find . -mindepth 2 -type f -name 'cloudbuild.yaml');
+      do
+        echo "Building ${f%/*} ... "
+        (
+          if [[ -s ${f%/*}/TAG.txt ]]; then
+            gcloud builds submit ${f%/*} --config=${f} --gcs-log-dir="gs://${PROJECT_ID}-cloudbuild/logs" --substitutions _TAG=$(cat ${f%/*}/TAG.txt) 2>&1 > /dev/null
+          else
+            gcloud builds submit ${f%/*} --config=${f} --gcs-log-dir="gs://${PROJECT_ID}-cloudbuild/logs" 2>&1 > /dev/null
+          fi
+          if [[ $? -ne 0 ]]; then
+            echo "${f%/*} failed" >> ${failure_file}
+          fi
+        ) &
+      done
+      wait
+      # Check if there is any failure.
+      if [[ -s ${failure_file} ]]; then
+        echo "Some builds failed:"
+        cat ${failure_file}
+        echo "Exiting."
+        exit 1
+      fi
+      echo "All builds succeeded."
+
+tags: ['xx']
+
+timeout: 3600s
