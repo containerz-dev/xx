@@ -1,0 +1,21 @@
+steps:
+  - name: docker.io/docker:19.03.8
+    args:
+      - image
+      - build
+      - --pull
+      - --build-arg
+      - XX_VERSION=11.5-11N605c
+      - --build-arg
+      - GOLANG_VERSION=1.14.2
+      - --tag
+      - gcr.io/$PROJECT_ID/xx/golang:$_TAG
+      - --tag
+      - gcr.io/$PROJECT_ID/xx/golang:latest
+      - .
+
+images:
+  - gcr.io/$PROJECT_ID/xx/golang:$_TAG
+  - gcr.io/$PROJECT_ID/xx/golang:latest
+
+timeout: 1800s
