@@ -1,5 +1,5 @@
-# syntax = docker/dockerfile:experimental
-FROM launcher.gcr.io/google/ubuntu1804:latest AS builder
+# syntax = docker/dockerfile:1.1.7-experimental
+FROM l.gcr.io/google/ubuntu1804:latest AS builder
 
 ENV DEBIAN_FRONTEND=noninteractive \
 	OSXCROSS_PATH=/osxcross
@@ -43,16 +43,19 @@ RUN set -eux && \
 RUN set -eux && \
 	gpg --keyserver hkp://keyserver.insect.com --recv 0x2D2CEF1034921684
 
-ARG CMAKE_VERSION=3.17.2
+ARG CMAKE_VERSION_MAJOR=3
+ARG CMAKE_VERSION_MINOR=17
+ARG CMAKE_VERSION_PATCH=2
+ENV CMAKE_VERSION=${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR}.${CMAKE_VERSION_PATCH}
 RUN set -eux && \
-	mkdir /tmp/cmake-install && \
+	mkdir -p /tmp/cmake-install && \
 	cd /tmp/cmake-install	&& \
 	\
-	curl -o /tmp/cmake-install/cmake-${CMAKE_VERSION}-SHA-256.txt.asc -SL "https://cmake.org/files/v${CMAKE_VERSION%.*}/cmake-${CMAKE_VERSION}-SHA-256.txt.asc" && \
-	curl -o /tmp/cmake-install/cmake-${CMAKE_VERSION}-SHA-256.txt -SL "https://cmake.org/files/v${CMAKE_VERSION%.*}/cmake-${CMAKE_VERSION}-SHA-256.txt" && \
+	curl -o /tmp/cmake-install/cmake-${CMAKE_VERSION}-SHA-256.txt.asc -SL "https://cmake.org/files/v${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR}/cmake-${CMAKE_VERSION}-SHA-256.txt.asc" && \
+	curl -o /tmp/cmake-install/cmake-${CMAKE_VERSION}-SHA-256.txt -SL "https://cmake.org/files/v${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR}/cmake-${CMAKE_VERSION}-SHA-256.txt" && \
 	gpg --verbose --verify /tmp/cmake-install/cmake-${CMAKE_VERSION}-SHA-256.txt.asc /tmp/cmake-install/cmake-${CMAKE_VERSION}-SHA-256.txt && \
 	\
-	curl -o /tmp/cmake-install/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz -SL "https://cmake.org/files/v${CMAKE_VERSION%.*}/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz" && \
+	curl -o /tmp/cmake-install/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz -SL "https://cmake.org/files/v${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR}/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz" && \
 	( grep "cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz" "cmake-${CMAKE_VERSION}-SHA-256.txt" | sha256sum -c - ) && \
 	\
 	tar xzf "cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz" -C /usr/local --strip-components=1 && \

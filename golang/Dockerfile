@@ -1,6 +1,6 @@
 # syntax = docker/dockerfile:experimental
 ARG XX_VERSION
-FROM gcr.io/containerz/xx:${XX_VERSION} AS builder
+FROM gcr.io/containerz/xx/xx:${XX_VERSION} AS builder
 
 ENV CC=o64-clang \
 	CXX=o64-clang++ \

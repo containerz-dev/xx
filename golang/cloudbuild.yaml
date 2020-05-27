@@ -1,21 +1,15 @@
 steps:
-  - name: docker.io/docker:19.03.8
+  - name: gcr.io/kaniko-project/executor:latest
     args:
-      - image
-      - build
-      - --pull
+      - --destination=gcr.io/$PROJECT_ID/xx/golang:$_TAG
+      - --destination=gcr.io/$PROJECT_ID/xx/golang:latest
+      - --cache=true
+      - --cache-ttl=6h
       - --build-arg
       - XX_VERSION=11.5-11N605c
       - --build-arg
-      - GOLANG_VERSION=1.14.2
-      - --tag
-      - gcr.io/$PROJECT_ID/xx/golang:$_TAG
-      - --tag
-      - gcr.io/$PROJECT_ID/xx/golang:latest
-      - .
+      - GOLANG_VERSION=1.14.3
 
-images:
-  - gcr.io/$PROJECT_ID/xx/golang:$_TAG
-  - gcr.io/$PROJECT_ID/xx/golang:latest
+tags: ['xx.golang']
 
 timeout: 1800s
