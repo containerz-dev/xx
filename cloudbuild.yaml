@@ -12,10 +12,10 @@ steps:
       do
         echo "Building ${f%/*} ... "
         (
-          if [[ -s ${f%/*}/TAG.txt ]]; then
-            gcloud builds submit ${f%/*} --config=${f} --gcs-log-dir="gs://${PROJECT_ID}-cloudbuild/logs" --substitutions _TAG=$(cat ${f%/*}/TAG.txt) 2>&1 > /dev/null
+          if [[ -s ${f%/*}/ENV.txt ]]; then
+            gcloud builds submit ${f%/*} --config ${f} --gcs-log-dir "gs://${PROJECT_ID}_cloudbuild/log" --substitutions $(cat ${f%/*}/ENV.txt) 2>&1 > /dev/null
           else
-            gcloud builds submit ${f%/*} --config=${f} --gcs-log-dir="gs://${PROJECT_ID}-cloudbuild/logs" 2>&1 > /dev/null
+            gcloud builds submit ${f%/*} --config ${f} --gcs-log-dir "gs://${PROJECT_ID}_cloudbuild/logs" 2>&1 > /dev/null
           fi
           if [[ $? -ne 0 ]]; then
             echo "${f%/*} failed" >> ${failure_file}

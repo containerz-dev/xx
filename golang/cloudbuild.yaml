@@ -1,14 +1,14 @@
 steps:
   - name: gcr.io/kaniko-project/executor:latest
     args:
-      - --destination=gcr.io/$PROJECT_ID/xx/golang:$_TAG
+      - --destination=gcr.io/$PROJECT_ID/xx/golang:${_GOLANG_VERSION}
       - --destination=gcr.io/$PROJECT_ID/xx/golang:latest
       - --cache=true
       - --cache-ttl=6h
       - --build-arg
-      - XX_VERSION=11.5-11N605c
+      - XX_VERSION=${_XX_VERSION}
       - --build-arg
-      - GOLANG_VERSION=1.14.3
+      - GOLANG_VERSION=${_GOLANG_VERSION}
 
 tags: ['xx.golang']
 

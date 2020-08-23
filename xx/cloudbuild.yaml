@@ -1,28 +1,28 @@
 steps:
   - name: gcr.io/kaniko-project/executor:latest
     args:
-      - --destination=gcr.io/$PROJECT_ID/xx/xx:$_TAG
+      - --destination=gcr.io/$PROJECT_ID/xx/xx:${_XCODE_VERSION}-${_XCODE_PRODUCT_BUILD_VERSION}
       - --destination=gcr.io/$PROJECT_ID/xx/xx:latest
       - --cache=true
       - --cache-ttl=6h
       - --build-arg
-      - MACOS_SDK_VERSION=10.15
+      - MACOS_SDK_VERSION=${_MACOS_SDK_VERSION}
       - --build-arg
-      - XCODE_VERSION=11.5
+      - XCODE_VERSION=${_XCODE_VERSION}
       - --build-arg
-      - XCODE_PRODUCT_BUILD_VERSION=11N605c
+      - XCODE_PRODUCT_BUILD_VERSION=${_XCODE_PRODUCT_BUILD_VERSION}
       - --build-arg
-      - CMAKE_VERSION_MAJOR=3
+      - CMAKE_VERSION_MAJOR=${_CMAKE_VERSION_MAJOR}
       - --build-arg
-      - CMAKE_VERSION_MINOR=17
+      - CMAKE_VERSION_MINOR=${_CMAKE_VERSION_MINOR}
       - --build-arg
-      - CMAKE_VERSION_PATCH=2
+      - CMAKE_VERSION_PATCH=${_CMAKE_VERSION_PATCH}
       - --build-arg
-      - LLVM_VERSION=10.0.0
+      - LLVM_VERSION=${_LLVM_VERSION}
       - --build-arg
-      - OSXCROSS_COMMIT=master
+      - OSXCROSS_COMMIT=${_OSXCROSS_COMMIT}
       - --build-arg
-      - LIBTOOL_VERSION=2.4.6_1
+      - LIBTOOL_VERSION=${_LIBTOOL_VERSION}
 
 tags: ['xx.xx']
 

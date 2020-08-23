@@ -1,12 +1,13 @@
 # syntax = docker/dockerfile:1.1.7-experimental
+
 FROM l.gcr.io/google/ubuntu1804:latest AS builder
 
 ENV DEBIAN_FRONTEND=noninteractive \
 	OSXCROSS_PATH=/osxcross
 
-ARG MACOS_SDK_VERSION=10.15
-ARG XCODE_VERSION=11.5
-ARG XCODE_PRODUCT_BUILD_VERSION=11N605c
+ARG MACOS_SDK_VERSION
+ARG XCODE_VERSION
+ARG XCODE_PRODUCT_BUILD_VERSION
 
 RUN set -eux && \
 	apt-get update && \
@@ -43,9 +44,9 @@ RUN set -eux && \
 RUN set -eux && \
 	gpg --keyserver hkp://keyserver.insect.com --recv 0x2D2CEF1034921684
 
-ARG CMAKE_VERSION_MAJOR=3
-ARG CMAKE_VERSION_MINOR=17
-ARG CMAKE_VERSION_PATCH=2
+ARG CMAKE_VERSION_MAJOR
+ARG CMAKE_VERSION_MINOR
+ARG CMAKE_VERSION_PATCH
 ENV CMAKE_VERSION=${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR}.${CMAKE_VERSION_PATCH}
 RUN set -eux && \
 	mkdir -p /tmp/cmake-install && \
@@ -62,11 +63,11 @@ RUN set -eux && \
 	cd / && \
 	rm -rf /tmp/cmake-install
 
-ARG LLVM_VERSION=10.0.0
+ARG LLVM_VERSION
 RUN set -eux && \
 	curl -SL https://github.com/llvm/llvm-project/releases/download/llvmorg-${LLVM_VERSION}/clang+llvm-${LLVM_VERSION}-x86_64-linux-gnu-ubuntu-18.04.tar.xz | tar xf - -J --strip-components=1 -C /usr
 
-ARG OSXCROSS_COMMIT=master
+ARG OSXCROSS_COMMIT
 RUN set -eux && \
 	git clone --depth 1 https://github.com/tpoechtrager/osxcross.git ${OSXCROSS_PATH} && \
 	git -C ${OSXCROSS_PATH} checkout -q "${OSXCROSS_COMMIT}" && \
@@ -81,7 +82,7 @@ ARG OCDEBUG=0
 RUN set -eux && \
 	CC=/usr/bin/clang CXX=/usr/bin/clang++ UNATTENDED=1 SDK_VERSION=${MACOS_SDK_VERSION} OSX_VERSION_MIN=${MACOS_SDK_VERSION} MACOSX_DEPLOYMENT_TARGET=${MACOS_SDK_VERSION} JOBS="$(nproc)" OCDEBUG=${OCDEBUG} ./build.sh
 
-ARG LIBTOOL_VERSION=2.4.6_1
+ARG LIBTOOL_VERSION
 RUN set -eux && \
 	mkdir -p "${OSXCROSS_PATH}/tarballs/MacOSX${MACOS_SDK_VERSION}.sdk/usr/" && \
 	case ${MACOS_SDK_VERSION} in \
