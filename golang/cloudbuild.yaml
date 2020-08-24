@@ -6,6 +6,11 @@ steps:
       - --destination=gcr.io/$PROJECT_ID/xx/golang:latest
       - --cache=true
       - --cache-ttl=6h
+      - --cache-repo=gcr.io/$PROJECT_ID/xx/golang/cache
+      - --dockerfile=Dockerfile
+      - --context=dir:///workspace
+      - --reproducible
+      - --skip-unused-stages=true
       - --build-arg
       - XX_VERSION=${_XX_VERSION}
       - --build-arg

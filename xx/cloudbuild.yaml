@@ -5,6 +5,11 @@ steps:
       - --destination=gcr.io/$PROJECT_ID/xx/xx:latest
       - --cache=true
       - --cache-ttl=6h
+      - --cache-repo=gcr.io/$PROJECT_ID/xx/xx/cache
+      - --dockerfile=Dockerfile
+      - --context=dir:///workspace
+      - --reproducible
+      - --skip-unused-stages=true
       - --build-arg
       - MACOS_SDK_VERSION=${_MACOS_SDK_VERSION}
       - --build-arg
