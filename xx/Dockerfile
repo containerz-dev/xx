@@ -3,7 +3,7 @@
 FROM l.gcr.io/google/ubuntu1804:latest AS builder
 
 ENV DEBIAN_FRONTEND=noninteractive \
-	OSXCROSS_PATH=/osxcross
+	OSXCROSS_PATH=/usr/local/osxcross
 
 ARG MACOS_SDK_VERSION
 ARG XCODE_VERSION
