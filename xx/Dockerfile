@@ -1,4 +1,4 @@
-# syntax = docker/dockerfile:1.1.7-experimental
+# syntax = docker/dockerfile:experimental
 
 FROM l.gcr.io/google/ubuntu1804:latest AS builder
 
