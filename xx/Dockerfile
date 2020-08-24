@@ -90,6 +90,7 @@ RUN set -eux && \
 		10.13) MACOS_CODENAME='high_sierra' ;; \
 		10.14) MACOS_CODENAME='mojave' ;; \
 		10.15) MACOS_CODENAME='catalina' ;; \
+		10.16) MACOS_CODENAME='catalina' ;; \
 	esac && \
 	\
 	curl -fsSL "https://homebrew.bintray.com/bottles/libtool-${LIBTOOL_VERSION}.${MACOS_CODENAME}.bottle.tar.gz" | gzip -dc | tar xf - -C "${OSXCROSS_PATH}/target/SDK/MacOSX${MACOS_SDK_VERSION}.sdk/usr/" \
