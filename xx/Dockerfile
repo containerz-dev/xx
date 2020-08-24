@@ -3,7 +3,8 @@
 FROM l.gcr.io/google/ubuntu1804:latest AS builder
 
 ENV DEBIAN_FRONTEND=noninteractive \
-	OSXCROSS_PATH=/usr/local/osxcross
+	OSXCROSS_PATH=/usr/local/osxcross \
+	OSXCROSS_BIN=/usr/local/osxcross/target/bin
 
 ARG MACOS_SDK_VERSION
 ARG XCODE_VERSION
@@ -97,7 +98,10 @@ RUN set -eux && \
 
 WORKDIR /
 
-ENV PATH=${OSXCROSS_PATH}/target/bin:$PATH \
+ENV OSXCROSS_BIN=/usr/local/osxcross/target/bin \
+        PATH=/usr/local/osxcross/target/bin:$PATH \
+	CC=${OSXCROSS_BIN}/o64-clang \
+	CXX=${OSXCROSS_BIN}/o64-clang++ \
 	MACOSX_DEPLOYMENT_TARGET=${MACOS_SDK_VERSION} \
 	OSXCROSS_GCC_NO_STATIC_RUNTIME=1
 
