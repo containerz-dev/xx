@@ -36,3 +36,13 @@ RUN set -eux && \
 	mkdir -p "${GOPATH}/src" "${GOPATH}/bin" && chmod -R 777 "${GOPATH}"
 
 WORKDIR "${GOPATH}"
+
+LABEL org.opencontainers.image.authors="The containerz Authors"
+LABEL org.opencontainers.image.url="https://github.com/containerz-dev/golang"
+LABEL org.opencontainers.image.documentation="https://github.com/containerz-dev/golang"
+LABEL org.opencontainers.image.source="git@github.com:containerz-dev/golang"
+LABEL org.opencontainers.image.version="${GOLANG_VERSION}-${XX_VERSION}"
+LABEL org.opencontainers.image.vendor="containerz"
+LABEL org.opencontainers.image.licenses="BSD-3-Clause"
+LABEL org.opencontainers.image.title="Go runtime with macOS Cross toolchain for Linux and *BSD"
+LABEL org.opencontainers.image.description="Linux container based Go cross-compiling macOS Mach-O executable binary"

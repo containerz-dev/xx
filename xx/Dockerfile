@@ -26,12 +26,6 @@ RUN set -eux && \
 		# for ld64 -random_uuid support
 		uuid-dev \
 		\
-		# bzip2 \
-		# cpio \
-		# gzip \
-		# sed \
-		#
-		# required dependency for osxcross
 		tar \
 		xz-utils \
 		\
@@ -93,10 +87,8 @@ RUN set -eux && \
 		10.16) MACOS_CODENAME='catalina' ;; \
 	esac && \
 	\
-	curl -fsSL "https://homebrew.bintray.com/bottles/libtool-${LIBTOOL_VERSION}.${MACOS_CODENAME}.bottle.tar.gz" | gzip -dc | tar xf - -C "${OSXCROSS_PATH}/target/SDK/MacOSX${MACOS_SDK_VERSION}.sdk/usr/" \
-			--strip-components=2 \
-			"libtool/${LIBTOOL_VERSION}/include/" \
-			"libtool/${LIBTOOL_VERSION}/lib/"
+	curl -fsSL "https://homebrew.bintray.com/bottles/libtool-${LIBTOOL_VERSION}.${MACOS_CODENAME}.bottle.tar.gz" | gzip -dc | \
+		tar xf - -C "${OSXCROSS_PATH}/target/SDK/MacOSX${MACOS_SDK_VERSION}.sdk/usr/" --strip-components=2 "libtool/${LIBTOOL_VERSION}/include/" "libtool/${LIBTOOL_VERSION}/lib/"
 
 RUN set -eux && \
 	groupadd wheel && \
@@ -108,5 +100,15 @@ WORKDIR /
 ENV PATH=${OSXCROSS_PATH}/target/bin:$PATH \
 	MACOSX_DEPLOYMENT_TARGET=${MACOS_SDK_VERSION} \
 	OSXCROSS_GCC_NO_STATIC_RUNTIME=1
+
+LABEL org.opencontainers.image.authors="The containerz Authors"
+LABEL org.opencontainers.image.url="https://github.com/containerz-dev/xx"
+LABEL org.opencontainers.image.documentation="https://github.com/containerz-dev/xx"
+LABEL org.opencontainers.image.source="git@github.com:containerz-dev/xx"
+LABEL org.opencontainers.image.version="${XCODE_VERSION}-${XCODE_PRODUCT_BUILD_VERSION}"
+LABEL org.opencontainers.image.vendor="containerz"
+LABEL org.opencontainers.image.licenses="BSD-3-Clause"
+LABEL org.opencontainers.image.title="macOS Cross toolchain for Linux and *BSD"
+LABEL org.opencontainers.image.description="Linux container based cross-compiling macOS Mach-O executable binary"
 
 CMD ["/bin/bash"]
