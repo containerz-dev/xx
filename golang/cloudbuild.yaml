@@ -1,6 +1,7 @@
 steps:
   - name: gcr.io/kaniko-project/executor:latest
     args:
+      - --destination=gcr.io/$PROJECT_ID/xx/golang:${_GOLANG_VERSION}-${_XX_VERSION}
       - --destination=gcr.io/$PROJECT_ID/xx/golang:${_GOLANG_VERSION}
       - --destination=gcr.io/$PROJECT_ID/xx/golang:latest
       - --cache=true
