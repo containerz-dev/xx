@@ -2,9 +2,7 @@
 ARG XX_VERSION
 FROM gcr.io/containerz/xx/xx:${XX_VERSION} AS builder
 
-ENV CC=o64-clang \
-	CXX=o64-clang++ \
-	GOPATH=/go \
+ENV GOPATH=/go \
 	PATH=/go/bin:/usr/local/go/bin:$PATH \
 	GOARCH=amd64 \
 	GOOS=darwin \
@@ -17,9 +15,8 @@ RUN set -eux && \
 	echo "f4ff5b5eb3a3cae1c993723f3eab519c5bae18866b5e5f96fe1102f0cb5c3e52  go1.4-bootstrap.tar.gz" | sha256sum -c - && \
 	tar -C / -xzf go1.4-bootstrap.tar.gz && \
 	rm go1.4-bootstrap.tar.gz && \
-	mv /go "${GOROOT_BOOTSTRAP}"
-
-RUN set -eux && \
+	mv /go "${GOROOT_BOOTSTRAP}" && \
+	\
 	cd ${GOROOT_BOOTSTRAP}/src && \
 	CC=/usr/bin/clang CXX=/usr/bin/clang++ CGO_ENABLED=0 ./make.bash -a
 
@@ -29,9 +26,10 @@ RUN set -eux && \
 	tar -C /usr/local -xzf golang.tar.gz && \
 	rm golang.tar.gz && \
 	cd /usr/local/go/src && \
-	CC=/usr/bin/clang CXX=/usr/bin/clang++ \
-	CC_FOR_TARGET=/osxcross/target/bin/o64-clang CXX_FOR_TARGET=/osxcross/target/bin/o64-clang++ \
-	./make.bash -a -d -v=10 -no-banner && \
+	\
+	CC=/usr/bin/clang CXX=/usr/bin/clang++ CC_FOR_TARGET=${OSXCROSS_PATH}/target/bin/o64-clang CXX_FOR_TARGET=${OSXCROSS_PATH}/target/bin/o64-clang++ \
+		./make.bash -a=true -d=true -v=1 -no-banner && \
+	\
 	rm -rf "${GOROOT_BOOTSTRAP}" && \
 	mkdir -p "${GOPATH}/src" "${GOPATH}/bin" && chmod -R 777 "${GOPATH}"
 
