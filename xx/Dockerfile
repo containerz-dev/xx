@@ -15,7 +15,6 @@ RUN set -eux && \
 		ca-certificates \
 		curl \
 		\
-		# cmake \
 		git \
 		patch \
 		python3-dev \
@@ -31,6 +30,8 @@ RUN set -eux && \
 		# cpio \
 		# gzip \
 		# sed \
+		#
+		# required dependency for osxcross
 		tar \
 		xz-utils \
 		\
