@@ -1,2 +1,4 @@
-Dockerfile
+.gcloudignore
 cloudbuild.yaml
+Dockerfile
+ENV.txt
