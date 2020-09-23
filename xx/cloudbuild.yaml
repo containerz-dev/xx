@@ -34,4 +34,4 @@ tags: ['xx.xx']
 options:
   machineType: "N1_HIGHCPU_32"
 
-timeout: 900s  # 15min
+timeout: 1800s  # 30min
