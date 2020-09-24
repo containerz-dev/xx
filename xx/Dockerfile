@@ -50,8 +50,11 @@ RUN set -eux && \
 	\
 	curl -o /tmp/cmake-install/cmake-${CMAKE_VERSION}-SHA-256.txt.asc -SL "https://cmake.org/files/v${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR}/cmake-${CMAKE_VERSION}-SHA-256.txt.asc" && \
 	curl -o /tmp/cmake-install/cmake-${CMAKE_VERSION}-SHA-256.txt -SL "https://cmake.org/files/v${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR}/cmake-${CMAKE_VERSION}-SHA-256.txt" && \
-	gpg --verbose --verify /tmp/cmake-install/cmake-${CMAKE_VERSION}-SHA-256.txt.asc /tmp/cmake-install/cmake-${CMAKE_VERSION}-SHA-256.txt && \
 	\
+	i=0 && until [ "$i" -ge 3 ]; do \
+		gpg --verbose --verify /tmp/cmake-install/cmake-${CMAKE_VERSION}-SHA-256.txt.asc /tmp/cmake-install/cmake-${CMAKE_VERSION}-SHA-256.txt && break || i=$((i+1)); \
+	done \
+	&& \
 	curl -o /tmp/cmake-install/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz -SL "https://cmake.org/files/v${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR}/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz" && \
 	( grep "cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz" "cmake-${CMAKE_VERSION}-SHA-256.txt" | sha256sum -c - ) && \
 	\
