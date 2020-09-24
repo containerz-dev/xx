@@ -2,7 +2,6 @@ steps:
   - name: gcr.io/kaniko-project/executor:latest
     args:
       - --destination=gcr.io/$PROJECT_ID/xx/xx:${_XCODE_VERSION}-${_XCODE_PRODUCT_BUILD_VERSION}
-      - --destination=gcr.io/$PROJECT_ID/xx/xx:latest
       - --cache=true
       - --cache-ttl=6h
       - --cache-repo=gcr.io/$PROJECT_ID/xx/xx/cache
