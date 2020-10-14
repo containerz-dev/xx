@@ -45,22 +45,7 @@ ARG CMAKE_VERSION_MINOR
 ARG CMAKE_VERSION_PATCH
 ENV CMAKE_VERSION=${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR}.${CMAKE_VERSION_PATCH}
 RUN set -eux && \
-	mkdir -p /tmp/cmake-install && \
-	cd /tmp/cmake-install	&& \
-	\
-	curl -o /tmp/cmake-install/cmake-${CMAKE_VERSION}-SHA-256.txt.asc -SL "https://cmake.org/files/v${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR}/cmake-${CMAKE_VERSION}-SHA-256.txt.asc" && \
-	curl -o /tmp/cmake-install/cmake-${CMAKE_VERSION}-SHA-256.txt -SL "https://cmake.org/files/v${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR}/cmake-${CMAKE_VERSION}-SHA-256.txt" && \
-	\
-	i=0 && until [ "$i" -ge 3 ]; do \
-		gpg --verbose --verify /tmp/cmake-install/cmake-${CMAKE_VERSION}-SHA-256.txt.asc /tmp/cmake-install/cmake-${CMAKE_VERSION}-SHA-256.txt && break || i=$((i+1)); \
-	done \
-	&& \
-	curl -o /tmp/cmake-install/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz -SL "https://cmake.org/files/v${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR}/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz" && \
-	( grep "cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz" "cmake-${CMAKE_VERSION}-SHA-256.txt" | sha256sum -c - ) && \
-	\
-	tar xzf "cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz" -C /usr/local --strip-components=1 && \
-	cd / && \
-	rm -rf /tmp/cmake-install
+	curl -SL "https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz" | tar xzf - -C /usr/local --strip-components=1
 
 ARG LLVM_VERSION
 RUN set -eux && \
