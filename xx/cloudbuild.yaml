@@ -30,4 +30,4 @@ steps:
 
 tags: ['xx.xx']
 
-timeout: 1800s  # 30min
+timeout: 2700s  # 45min
